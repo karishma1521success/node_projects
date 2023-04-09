@@ -39,15 +39,14 @@ if(folderExists){
     console.log(folderNameBelongs);
     //step5. create that folderNameBelongs if it doesn't exist 
     let folderNameBelongsPath = path.join(folderPathInput,folderNameBelongs);
-    if(!fs.existsSync(folderNameBelongsPath)){
+    if(fs.existsSync(folderNameBelongsPath)){
+      moveFile(folderPathInput, folderNameBelongsPath, files[i]);
+    }else{
       fs.mkdirSync(folderNameBelongsPath);
+      moveFile(folderPathInput, folderNameBelongsPath, files[i]);
     }
     // //step6. now folderNameBelongs folder exist now we have to move the file into that folder
-    let sourcePath = path.join(folderPathInput , files[i]);
-    let destinationPath = path.join(folderNameBelongsPath , files[i]);
-    fs.copyFileSync(sourcePath,destinationPath);  // now here extenison file copy to the belongs folder
-    //step7: delete the source Path file
-    fs.unlinkSync(sourcePath);
+    
   }
    console.log("folder Exists");
 }else{
@@ -68,7 +67,13 @@ function giveFolderName(ext){
   return 'others';
 }
 
-
+function moveFile(folderPathInput, folderNameBelongsPath, fileName){
+  let sourcePath = path.join(folderPathInput , fileName);
+    let destinationPath = path.join(folderNameBelongsPath , fileName);
+    fs.copyFileSync(sourcePath,destinationPath);  // now here extenison file copy to the belongs folder
+    //step7: delete the source Path file
+    fs.unlinkSync(sourcePath);
+}
 
 
 
